@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -73,10 +73,7 @@ public class PetController { // controller võtab forntendi päringuid vastu
             if (pet.getWeight() <= smallest.getWeight()) smallest = pet;
             if (pet.getWeight() >= biggest.getWeight()) biggest = pet;
         }
-        List<Pet> result = new ArrayList<>();
-        result.add(biggest);
-        result.add(smallest);
-        return result;
+        return Arrays.asList(biggest, smallest);
     }
 
     // Võimalda sisestada minimaalne kaal ja maksimaalne kaal ning väljasta kõik lemmikloomad selles vahemikus.
