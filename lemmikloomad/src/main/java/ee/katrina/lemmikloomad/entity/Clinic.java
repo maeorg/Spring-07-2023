@@ -1,4 +1,4 @@
-package ee.katrina.lemmikloomad;
+package ee.katrina.lemmikloomad.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @AllArgsConstructor
@@ -15,11 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Owner {
+public class Clinic {
 
     @Id
     private String name;
     @OneToMany
     private List<Pet> pets;
-
 }

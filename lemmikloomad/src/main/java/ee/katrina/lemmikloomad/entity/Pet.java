@@ -1,4 +1,4 @@
-package ee.katrina.lemmikloomad;
+package ee.katrina.lemmikloomad.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

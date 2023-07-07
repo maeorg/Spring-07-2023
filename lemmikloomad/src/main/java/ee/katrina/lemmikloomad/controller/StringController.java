@@ -1,5 +1,6 @@
-package ee.katrina.lemmikloomad;
+package ee.katrina.lemmikloomad.controller;
 
+import ee.katrina.lemmikloomad.entity.Person;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;

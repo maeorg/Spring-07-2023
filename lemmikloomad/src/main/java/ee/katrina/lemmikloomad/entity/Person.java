@@ -1,4 +1,4 @@
-package ee.katrina.lemmikloomad;
+package ee.katrina.lemmikloomad.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

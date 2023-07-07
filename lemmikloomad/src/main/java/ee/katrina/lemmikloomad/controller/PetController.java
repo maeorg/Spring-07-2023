@@ -1,13 +1,23 @@
-package ee.katrina.lemmikloomad;
+package ee.katrina.lemmikloomad.controller;
 
+import ee.katrina.lemmikloomad.dto.OwnerDTO;
+import ee.katrina.lemmikloomad.entity.Clinic;
+import ee.katrina.lemmikloomad.entity.Owner;
+import ee.katrina.lemmikloomad.entity.Pet;
+import ee.katrina.lemmikloomad.repository.ClinicRepository;
+import ee.katrina.lemmikloomad.repository.OwnerRepository;
+import ee.katrina.lemmikloomad.repository.PetRepository;
+import ee.katrina.lemmikloomad.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// sout
+// fori
+// main
 @RestController
 public class PetController { // controller võtab forntendi päringuid vastu
 
@@ -20,7 +30,10 @@ public class PetController { // controller võtab forntendi päringuid vastu
     @Autowired
     ClinicRepository clinicRepository;
 
-    @GetMapping("pet/add") // localhost:8080/pet/add?name=Koer&weight=2000
+    @Autowired
+    OwnerService ownerService;
+
+    @PostMapping ("pets") // localhost:8080/pets - POSTMANI kaudu POST päring parameetritega
     public List<Pet> addPet(
             @RequestParam String name,
             @RequestParam double weight
@@ -30,12 +43,16 @@ public class PetController { // controller võtab forntendi päringuid vastu
         return petRepository.findAll();
     }
 
-    @GetMapping("owner/add") // localhost:8080/owner/add?name=Ott
+    @PostMapping ("owners") // localhost:8080/owners - POSTMANI kaudu POST päring parameetritega
     public List<Owner> addOwner(
-            @RequestParam String name
-    ) {
-        Owner owner = new Owner();
-        owner.setName(name);
+            @RequestBody Owner owner
+    ) throws Exception {
+//        Owner owner = new Owner();
+//        owner.setName(name);
+        if (ownerRepository.findByPersonalCode(owner.getPersonalCode()) != null) {
+            throw new Exception("Sama isikukoodiga inimene on juba olemas");
+        }
+        owner.setPets(new ArrayList<>());
         ownerRepository.save(owner);
         return ownerRepository.findAll();
     }
@@ -52,6 +69,48 @@ public class PetController { // controller võtab forntendi päringuid vastu
         found.setPets(pets);
         return ownerRepository.save(found);
     }
+
+    // Tagasta kõik omanikud
+//    @GetMapping("owners") // localhost:8080/owners
+//    public List<OwnerDTO> getAllOwners() {
+//        List<Owner> owners = ownerRepository.findAll();
+//        List<OwnerDTO> ownerDTOs = new ArrayList<>();
+//        for (Owner owner : owners) {
+//            OwnerDTO ownerDTO = new OwnerDTO();
+//            ownerDTO.setName(owner.getName());
+//            ownerDTO.setPets(owner.getPets());
+//            ownerDTOs.add(ownerDTO);
+//        }
+//        return ownerDTOs;
+//    }
+
+    // Tagasta kõik omanikud
+    @GetMapping("owners") // localhost:8080/owners
+    public List<OwnerDTO> findAllOwners() {
+        return ownerService.findAllOwners();
+    }
+
+    @GetMapping("owner-personcode/{personCode}") // localhost:8080/owner-personcode/
+    public Owner findOwnerByPersonCode(@PathVariable String personCode) {
+        return ownerRepository.findByPersonalCode(personCode);
+    }
+
+    @GetMapping("owner-by-pet") // localhost:8080/owner-by-pet
+    public List<Owner> findOwnersByPetCount() {
+        return ownerRepository.findAllByPetsGreaterThan(0);
+    }
+
+//    public List<Owner> findAllByPetsGreaterThan(List<Owner> owners, int count) {
+//        List<Owner> result = new ArrayList<>();
+//
+//        for (Owner owner : owners) {
+//            if (owner.getPets().size() > count) {
+//                result.add(owner);
+//            }
+//        }
+//
+//        return result;
+//
 
     // Võimalda küsida Lemmikloomade koguarvu ühe omaniku osas (sisendiks omanik ja väljundiks arv).
     @GetMapping("owner/numberOfPets") // localhost:8080/owner/numberOfPets?owner=Ott
@@ -122,5 +181,7 @@ public class PetController { // controller võtab forntendi päringuid vastu
         }
         return mostPetsClinic;
     }
-
 }
+
+// Controller - Võtab vastu päringuid ja tagastab vastuse
+// Service - Teeb musta tööd, õhendab Controllerit
