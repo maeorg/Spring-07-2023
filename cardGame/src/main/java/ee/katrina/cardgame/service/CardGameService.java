@@ -70,10 +70,11 @@ public class CardGameService {
         return baseCard;
     }
 
-    public void startGame() {
+    public String startGame() {
         points = 0;
         createDeck();
         baseCard = drawCard();
+        return "Game started. Deck is set and base card is drawn. Start your round.";
     }
 
     public boolean checkTimeout() {
@@ -95,6 +96,19 @@ public class CardGameService {
         return points;
     }
 
+    public String checkGuessResult(String guess) {
+        if (checkTimeout()) return "TIME_OUT";
+        int result = checkResult(guess);
+        String resultCard = getResultCard() + ". ";
+        String points =  "You have " + calculatePoints(result) + " points. ";
+        String instruction = "You have 10 seconds to make your next guess (higher, lower or equal)!";
+        startRound();
+        if (result > 0) {
+            return resultCard + "Correct guess! " + points + instruction;
+        } else {
+            return resultCard + "Incorrect guess! " + points + instruction;
+        }
+    }
 
     public List<Card> viewCards() {
         return cardGameRepository.findAll();

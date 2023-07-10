@@ -17,8 +17,7 @@ public class CardGameController {
 
     @GetMapping("cardGame/startGame") // localhost:8080/cardGame/startGame
     public String startGame() {
-        cardGameService.startGame();
-        return "Game started. Deck is set and base card is drawn. Start your round.";
+        return cardGameService.startGame();
     }
 
     @GetMapping("cardGame/StartRoundRequest") // localhost:8080/cardGame/StartRoundRequest
@@ -28,17 +27,7 @@ public class CardGameController {
 
     @GetMapping("cardGame/guess/{guess}") // localhost:8080/cardGame/guess/higher
     public String guess(@PathVariable String guess) {
-        if (cardGameService.checkTimeout()) return "TIME_OUT";
-        int result = cardGameService.checkResult(guess);
-        String resultCard = cardGameService.getResultCard() + ". ";
-        String points =  "You have " + cardGameService.calculatePoints(result) + " points. ";
-        String instruction = "You have 10 seconds to make your next guess (higher, lower or equal)!";
-        cardGameService.startRound();
-        if (result > 0) {
-            return resultCard + "Correct guess! " + points + instruction;
-        } else {
-            return resultCard + "Incorrect guess! " + points + instruction;
-        }
+        return cardGameService.checkGuessResult(guess);
     }
 
     @GetMapping("cardGame/viewCards") // localhost:8080/cardGame/viewCards
