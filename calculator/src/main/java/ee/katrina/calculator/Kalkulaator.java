@@ -1,6 +1,7 @@
 package ee.katrina.calculator;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -101,6 +102,24 @@ public class Kalkulaator { // Tee uus class Kalkulaator, millele lisa üles anno
     }
 
     // Tee 4 uut funktsiooni, üks liidab, teine lahutab, kolmas korrutab ja neljas jagab.
+    @GetMapping("kalkulaator/addTwoNumbers") // localhost:8080/kalkulaator/addTwoNumbers?first=2&second=45
+    public int addTwoNumbers(@RequestParam int first, @RequestParam int second) {
+        return first + second;
+    }
 
+    @GetMapping("kalkulaator/subtractTwoNumbers") // localhost:8080/kalkulaator/subtractTwoNumbers?first=2&second=45
+    public int subtractTwoNumbers(@RequestParam int first, @RequestParam int second) {
+        return first - second;
+    }
+
+    @GetMapping("kalkulaator/multiplyTwoNumbers") // localhost:8080/kalkulaator/multiplyTwoNumbers?first=2&second=45
+    public int multiplyTwoNumbers(@RequestParam int first, @RequestParam int second) {
+        return first * second;
+    }
+
+    @GetMapping("kalkulaator/divideTwoNumbers") // localhost:8080/kalkulaator/divideTwoNumbers?first=20&second=5
+    public int divideTwoNumbers(@RequestParam int first, @RequestParam int second) {
+        return first / second;
+    }
 
 }
