@@ -51,6 +51,9 @@ public class GameService {
                 saveGameToDatabase();
                 return "GAME_OVER";
             }
+//            // -------- //
+//            saveGameToDatabase();
+//            // -------- //
             return "TIME_OUT";
         }
         return "";
@@ -82,6 +85,9 @@ public class GameService {
             return "GAME_OVER";
         }
         baseCard = newCard;
+//        // -------- //
+//        saveGameToDatabase();
+//        // -------- //
         return "WRONG";
     }
 
