@@ -22,7 +22,7 @@ public class Order {
     private Date creationDate;
     private String paymentState;
     private double totalSum;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private OrderRow orderRow;
     @ManyToOne
     private Person person;

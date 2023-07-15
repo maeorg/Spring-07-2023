@@ -36,8 +36,9 @@ public class ProductController {
     }
 
     @PutMapping("products/{id}")
-    public List<Product> getProduct(@PathVariable Long id, @RequestBody Product product) {
+    public List<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         if (productRepository.existsById(id)) {
+            product.setId(productRepository.findById(id).get().getId());
             productRepository.save(product);
         }
         return productRepository.findAll();

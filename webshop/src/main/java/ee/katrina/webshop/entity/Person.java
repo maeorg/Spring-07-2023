@@ -21,6 +21,6 @@ public class Person {
     private String firstName;
     private String lastName;
     private String password;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private ContactData contactData;
 }
