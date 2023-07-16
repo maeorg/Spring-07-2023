@@ -21,6 +21,7 @@ public class SportlaneController {
         return sportlaneRepository.findAll();
     }
 
+    // -Võimalda salvestada sportlane – nimi, riik, vanus.
     @PostMapping("sportlane")
     public List<Sportlane> addSportlane(@RequestBody Sportlane sportlane) {
         sportlaneRepository.save(sportlane);

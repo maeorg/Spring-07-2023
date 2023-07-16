@@ -21,4 +21,5 @@ public class Tulemus {
     @ManyToOne
     private Ala ala;
     private double tulemus;
+    private int punktid;
 }
