@@ -1,8 +1,7 @@
 package ee.katrina.webshop.controller;
 
-import ee.katrina.webshop.dto.OmnivaPM;
-import ee.katrina.webshop.dto.ParcelMachines;
-import ee.katrina.webshop.dto.SmartPostPM;
+import ee.katrina.webshop.dto.parcelmachines.OmnivaPM;
+import ee.katrina.webshop.dto.parcelmachines.ParcelMachines;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

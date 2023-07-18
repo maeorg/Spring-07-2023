@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,8 +23,8 @@ public class Order {
     private Date creationDate;
     private String paymentState;
     private double totalSum;
-    @OneToOne(cascade = {CascadeType.ALL})
-    private OrderRow orderRow;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<OrderRow> orderRow;
     @ManyToOne
     private Person person;
 }

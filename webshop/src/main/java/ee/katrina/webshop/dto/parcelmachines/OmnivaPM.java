@@ -1,4 +1,4 @@
-package ee.katrina.webshop.dto;
+package ee.katrina.webshop.dto.parcelmachines;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

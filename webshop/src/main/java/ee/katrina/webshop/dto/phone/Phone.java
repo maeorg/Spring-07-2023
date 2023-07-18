@@ -1,4 +1,4 @@
-package ee.katrina.webshop.dto;
+package ee.katrina.webshop.dto.phone;
 
 import lombok.Data;
 
