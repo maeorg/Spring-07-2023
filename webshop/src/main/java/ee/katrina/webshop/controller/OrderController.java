@@ -3,9 +3,8 @@ package ee.katrina.webshop.controller;
 import ee.katrina.webshop.entity.Order;
 import ee.katrina.webshop.entity.OrderRow;
 import ee.katrina.webshop.repository.OrderRepository;
-import ee.katrina.webshop.repository.PersonRepository;
-import ee.katrina.webshop.repository.ProductRepository;
 import ee.katrina.webshop.service.OrderService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 public class OrderController {
 
     // KODUS: Kõikide võtmine, Lisamine, Kustutamine, Ühe võtmine, Muutmine
     //                          korraga tuleb lisada OrderRow
 
-    @Autowired
+//    @Autowired
     OrderRepository orderRepository;
 
-    @Autowired
-    ProductRepository productRepository;
-
-    @Autowired
-    PersonRepository personRepository;
-
-    @Autowired
+//    @Autowired
     OrderService orderService;
 
     @GetMapping("orders")

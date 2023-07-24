@@ -9,6 +9,7 @@ import ee.katrina.webshop.entity.Product;
 import ee.katrina.webshop.repository.OrderRepository;
 import ee.katrina.webshop.repository.PersonRepository;
 import ee.katrina.webshop.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,23 +20,34 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class OrderService {
 
-    @Autowired
+//    @Autowired
     PersonRepository personRepository;
-    @Autowired
+//    @Autowired
     ProductRepository productRepository;
-    @Autowired
+//    @Autowired
     OrderRepository orderRepository;
 
     public Long saveOrderToDb(double totalSum, List<OrderRow> orderRows, Long personId) {
         Person person = personRepository.findById(personId).get();
-        Order order = new Order();
-        order.setPaymentState("Initial");
-        order.setPerson(person);
-        order.setOrderRow(orderRows);
-        order.setCreationDate(new Date());
-        order.setTotalSum(totalSum);
+
+        Order order = Order.builder()
+                .paymentState("Inital")
+                .person(person)
+                .orderRow(orderRows)
+                .creationDate(new Date())
+                .totalSum(totalSum)
+                .build();
+
+//        Order order = new Order();
+//        order.setPaymentState("Initial");
+//        order.setPerson(person);
+//        order.setOrderRow(orderRows);
+//        order.setCreationDate(new Date());
+//        order.setTotalSum(totalSum);
+
         Order newOrder = orderRepository.save(order);
         return newOrder.getId();
     }

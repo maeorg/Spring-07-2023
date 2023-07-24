@@ -1,10 +1,7 @@
 package ee.katrina.webshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders") // PostgreSQL sees on "order" ja "user" reserveeritud, ei saa neid kasutada tabeli nimedena
 @SequenceGenerator(name = "seq", initialValue = 8522086, allocationSize = 1)
+@Builder
 public class Order {
 
     @Id
