@@ -6,11 +6,12 @@ import ee.katrina.webshop.entity.Order;
 import ee.katrina.webshop.entity.OrderRow;
 import ee.katrina.webshop.entity.Person;
 import ee.katrina.webshop.entity.Product;
+import ee.katrina.webshop.exception.NotEnoughInStockException;
 import ee.katrina.webshop.repository.OrderRepository;
 import ee.katrina.webshop.repository.PersonRepository;
 import ee.katrina.webshop.repository.ProductRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,19 +19,43 @@ import org.springframework.web.client.RestTemplate;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
-@AllArgsConstructor
+//@AllArgsConstructor
 public class OrderService {
 
-//    @Autowired
+    @Autowired
     PersonRepository personRepository;
-//    @Autowired
+
+    @Autowired
     ProductRepository productRepository;
-//    @Autowired
+
+    @Autowired
     OrderRepository orderRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${everypay.url}")
+    String url;
+
+    @Value("${everypay.token}")
+    String token;
+
+    @Value("${everypay.username}")
+    String username;
+
+    @Value("${everypay.customer-url}")
+    String customerUrl;
+
+    @Value("${everypay.account-name}")
+    String accountName;
+
     public Long saveOrderToDb(double totalSum, List<OrderRow> orderRows, Long personId) {
+        if (personRepository.findById(personId).isEmpty()) {
+            throw new NoSuchElementException("Person not found");
+        }
         Person person = personRepository.findById(personId).get();
 
         Order order = Order.builder()
@@ -52,13 +77,15 @@ public class OrderService {
         return newOrder.getId();
     }
 
-    public double getTotalSum(List<OrderRow> orderRows) throws Exception {
+    public double getTotalSum(List<OrderRow> orderRows) throws NotEnoughInStockException {
         double totalSum = 0;
         for (OrderRow o : orderRows) {
+            if (productRepository.findById(o.getProduct().getId()).isEmpty()) {
+                throw new NoSuchElementException("Product not found");
+            }
             Product product = productRepository.findById(o.getProduct().getId()).get();
             if (product.getStock() < o.getQuantity()) {
-                // Enda exceptioni peaks pigem tegema, järgmine kord teeme
-                throw new Exception("Not enough in stock: " + product.getName() + ", id: " + product.getId());
+                throw new NotEnoughInStockException("Not enough in stock: " + product.getName() + ", id: " + product.getId());
             }
             totalSum += o.getQuantity() * product.getPrice();
         }
@@ -66,22 +93,20 @@ public class OrderService {
     }
 
     public String makePayment(double totalSum, Long id) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "https://igw-demo.every-pay.com/api/v4/payments/oneoff";
+//        RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION,
-                "Basic ZTM2ZWI0MGY1ZWM4N2ZhMjo3YjkxYTNiOWUxYjc0NTI0YzJlOWZjMjgyZjhhYzhjZA==");
+        headers.set(HttpHeaders.AUTHORIZATION, "Basic " + token);
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
         EverypayData body = new EverypayData();
-        body.setApi_username("e36eb40f5ec87fa2");
-        body.setAccount_name("EUR3D1");
+        body.setApi_username(username);
+        body.setAccount_name(accountName);
         body.setAmount(totalSum);
         body.setOrder_reference(id.toString());
         body.setNonce("uf0d0308632nvnv23" + ZonedDateTime.now() + Math.random());
         body.setTimestamp(ZonedDateTime.now().toString());
-        body.setCustomer_url("https://maksmine.web.app/makse");
+        body.setCustomer_url(customerUrl);
 
         HttpEntity<EverypayData> httpEntity = new HttpEntity<>(body, headers);
         ResponseEntity<EverypayResponse> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity,

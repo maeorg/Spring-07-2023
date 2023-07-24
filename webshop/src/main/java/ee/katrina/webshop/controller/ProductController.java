@@ -1,6 +1,7 @@
 package ee.katrina.webshop.controller;
 
 import ee.katrina.webshop.entity.Product;
+import ee.katrina.webshop.exception.ProductNotFoundException;
 import ee.katrina.webshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,10 @@ public class ProductController {
     }
 
     @GetMapping("products/{id}")
-    public Product getProduct(@PathVariable Long id) {
+    public Product getProduct(@PathVariable Long id) throws ProductNotFoundException {
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException("Product not found");
+        }
         return productRepository.findById(id).get();
     }
 

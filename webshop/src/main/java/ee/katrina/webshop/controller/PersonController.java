@@ -1,11 +1,13 @@
 package ee.katrina.webshop.controller;
 
 import ee.katrina.webshop.entity.Person;
+import ee.katrina.webshop.exception.ProductNotFoundException;
 import ee.katrina.webshop.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class PersonController {
@@ -34,7 +36,10 @@ public class PersonController {
     }
 
     @GetMapping("persons/{id}")
-    public Person getPerson(@PathVariable Long id) {
+    public Person getPerson(@PathVariable Long id) throws NoSuchElementException {
+        if (!personRepository.existsById(id)) {
+            throw new NoSuchElementException("Person not found");
+        }
         return personRepository.findById(id).get();
     }
 

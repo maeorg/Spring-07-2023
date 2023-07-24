@@ -2,6 +2,7 @@ package ee.katrina.webshop.controller;
 
 import ee.katrina.webshop.entity.Order;
 import ee.katrina.webshop.entity.OrderRow;
+import ee.katrina.webshop.exception.NotEnoughInStockException;
 import ee.katrina.webshop.repository.OrderRepository;
 import ee.katrina.webshop.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -46,7 +47,7 @@ public class OrderController {
 //    }
 
     @PostMapping("orders/{personId}")
-    public ResponseEntity<String> addOrder(@RequestBody List<OrderRow> orderRows, @PathVariable Long personId) throws Exception {
+    public ResponseEntity<String> addOrder(@RequestBody List<OrderRow> orderRows, @PathVariable Long personId) throws NotEnoughInStockException {
         // hiljem võtame tokeni küljest sisu
         double totalSum = orderService.getTotalSum(orderRows);
         Long id = orderService.saveOrderToDb(totalSum, orderRows, personId);
