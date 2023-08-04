@@ -43,6 +43,12 @@ public class ControllerExceptionHandler {
         return getExceptionMessageResponseEntity(HttpStatus.BAD_REQUEST, message);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ExceptionMessage> handleException(RuntimeException e) {
+        String message = e.getMessage();
+        return getExceptionMessageResponseEntity(HttpStatus.BAD_REQUEST, message);
+    }
+
     private static ResponseEntity<ExceptionMessage> getExceptionMessageResponseEntity(HttpStatus status, String exceptionMessage) {
         ExceptionMessage message = new ExceptionMessage();
         message.setDate(new Date());

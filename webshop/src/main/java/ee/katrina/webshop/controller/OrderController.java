@@ -6,24 +6,25 @@ import ee.katrina.webshop.exception.NotEnoughInStockException;
 import ee.katrina.webshop.repository.OrderRepository;
 import ee.katrina.webshop.service.OrderService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
-@AllArgsConstructor
 public class OrderController {
 
     // KODUS: Kõikide võtmine, Lisamine, Kustutamine, Ühe võtmine, Muutmine
     //                          korraga tuleb lisada OrderRow
 
-//    @Autowired
+    @Autowired
     OrderRepository orderRepository;
 
-//    @Autowired
+    @Autowired
     OrderService orderService;
 
     @GetMapping("orders")
@@ -47,7 +48,7 @@ public class OrderController {
 //    }
 
     @PostMapping("orders/{personId}")
-    public ResponseEntity<String> addOrder(@RequestBody List<OrderRow> orderRows, @PathVariable Long personId) throws NotEnoughInStockException {
+    public ResponseEntity<String> addOrder(@RequestBody List<OrderRow> orderRows, @PathVariable Long personId) throws NotEnoughInStockException, ExecutionException {
         // hiljem võtame tokeni küljest sisu
         double totalSum = orderService.getTotalSum(orderRows);
         Long id = orderService.saveOrderToDb(totalSum, orderRows, personId);
@@ -73,6 +74,11 @@ public class OrderController {
             orderRepository.save(order);
         }
         return new ResponseEntity<>(orderRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("check-payment/{paymentReference}")
+    public ResponseEntity<Boolean> checkPayment(@PathVariable("paymentReference") String paymentReference) {
+        return new ResponseEntity<>(orderService.checkPayment(paymentReference), HttpStatus.OK);
     }
 
 }

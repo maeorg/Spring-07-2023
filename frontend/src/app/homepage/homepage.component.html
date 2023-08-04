@@ -1,0 +1,7 @@
+<p>homepage works!</p>
+<!-- <div>{{ products }}</div> -->
+
+<div *ngFor="let product of products">
+    <div>{{ product.name }} - {{ product.price }} € - {{ product.category.name }}</div>
+    <button (click)="addToCart(product)">Lisa ostukorvi</button>
+</div>

@@ -1,0 +1,7 @@
+<p>maintain-products works!</p>
+
+<div *ngFor="let product of products">
+    <div>{{ product.name }} - {{ product.price }} € - {{ product.category.name }}</div>
+    <button (click)="deleteProduct(product)">Eemalda toode</button>
+    <button routerLink="/muuda-toode/{{product.id}}">Muuda toodet</button>
+</div>
