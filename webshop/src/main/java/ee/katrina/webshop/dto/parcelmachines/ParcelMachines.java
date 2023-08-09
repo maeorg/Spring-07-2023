@@ -8,6 +8,6 @@ import java.util.List;
 public class ParcelMachines {
 
     List<OmnivaPM> omnivaPMs;
-    List<SmartPostPM> smartPostPMS;
+    List<SmartPostPM> smartPostPMs;
 
 }

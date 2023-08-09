@@ -1,1 +1,38 @@
-<p>cart works!</p>
+<button
+class="cart-top btn btn-primary"
+*ngIf="cartProducts.length > 0" (click)="onEmptyCart()">Tühjenda</button>
+
+<div>
+  <div class="cart-item" *ngFor="let cProduct of cartProducts">
+    <img class="cart-item-pic" src="{{cProduct.product.image}}" alt="">
+    <div class="cart-item-name">{{ cProduct.product.name }}</div>
+    <div class="cart-item-price">{{ cProduct.product.price.toFixed(2) }}</div>
+    <div>
+        <img class="cart-button" (click)="onDecreaseQuantity(cProduct)" src="assets/cart/minus.png" />
+        <span class="cart-item-quantity">{{ cProduct.quantity }} tk</span>
+        <img class="cart-button" (click)="onIncreaseQuantity(cProduct)" src="assets/cart/plus.png" />
+    </div>
+    <div class="cart-item-total">{{ (cProduct.product.price * cProduct.quantity).toFixed(2) }}</div>
+    <img class="cart-button" (click)="onRemoveProduct(cProduct)" src="assets/cart/delete.png" />
+  </div>
+</div>
+
+<div *ngIf="cartProducts.length > 0" class="cart-bottom">
+    <div>KOKKU: {{sumOfCart.toFixed(2)}} €</div>
+    <select>
+      <option *ngFor="let parcelmachine of omnivaPMs">
+        {{parcelmachine.NAME}}
+      </option>
+    </select>
+    <select *ngIf="smartPostPMs.length > 0">
+        <option *ngFor="let parcelmachine of smartPostPMs">
+          {{parcelmachine.name}}
+        </option>
+      </select>
+    <br>
+    <button class="btn btn-success" (click)="onPay()">Maksma</button>
+</div>
+
+<div class="center" *ngIf="cartProducts.length === 0">
+  Ostukorv on tühi
+</div>

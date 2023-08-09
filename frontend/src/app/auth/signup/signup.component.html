@@ -1,0 +1,62 @@
+<form (ngSubmit)="onSubmit(addPersonForm)" #addPersonForm="ngForm" class="border border-light p-5">
+    <p class="h4 mb-4">Loo konto</p>
+    
+    <div class="form-group col-md-4 mb-4">
+        <label for="firstName">Eesnimi</label>
+        <input ngModel name="firstName" type="text" id="firstName" class="form-control" placeholder="Eesnimi">
+    </div>
+    <div class="form-group col-md-4 mb-4">
+        <label for="lastName">Perenimi</label>
+        <input ngModel name="lastName" type="text"  class="form-control" id="lastName" placeholder="Perenimi">
+    </div>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="personalCode">Isikukood</label>
+        <input ngModel name="personalCode" type="text" class="form-control" id="personalCode" placeholder="Isikukood">
+    </div>
+
+    <div class="form-group mb-4 col-md-4">
+        <label for="password">Parool</label>
+        <input ngModel name="password" type="password" class="form-control" id="password" placeholder="Parool">
+    </div>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="email">Email</label>
+        <input ngModel name="email" type="email" class="form-control" id="email" placeholder="Email">
+    </div>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="phone">Telefoninumber</label>
+        <input ngModel name="phone" type="text" class="form-control" id="phone" placeholder="Telefoninumber">
+    </div>
+
+    <p class="h6">Aadress:</p>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="country">Riik</label>
+        <input ngModel name="country" type="text" class="form-control" id="country" placeholder="Riik">
+    </div>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="county">Maakond</label>
+        <input ngModel name="county" type="text" class="form-control" id="county" placeholder="Maakond">
+    </div>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="street">Tänav</label>
+        <input ngModel name="street" type="text" class="form-control" id="street" placeholder="Tänav">
+    </div>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="number">Number</label>
+        <input ngModel name="number" type="text" class="form-control" id="number" placeholder="Number">
+    </div>
+
+    <div class="form-group col-md-4 mb-4">
+        <label for="postalIndex">Postiindeks</label>
+        <input ngModel name="postalIndex" type="text" class="form-control" id="postalIndex" placeholder="Postiindeks">
+    </div>
+
+    <button class="btn btn-primary" type="submit">Loo konto</button>
+
+</form>

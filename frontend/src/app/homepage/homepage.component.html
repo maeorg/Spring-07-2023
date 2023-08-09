@@ -1,7 +1,16 @@
-<p>homepage works!</p>
+<!-- <p>homepage works!</p> -->
 <!-- <div>{{ products }}</div> -->
 
-<div *ngFor="let product of products">
-    <div>{{ product.name }} - {{ product.price }} € - {{ product.category.name }}</div>
-    <button (click)="addToCart(product)">Lisa ostukorvi</button>
-</div>
+<div class="products">
+    <div class="product" *ngFor="let item of products">
+      <div class="name">{{item.name}}</div>
+      <div>{{item.price}}</div>
+      <button class="btn btn-success" (click)="addToCart(item)">Lisa ostukorvi</button>
+    </div>
+  </div>
+  
+  <!-- 
+    for(Product item: list)
+   -->
+
+   <button [class.active]="activePage === page" *ngFor="let page of pages" (click)="onChangePage(page)">{{page}}</button>

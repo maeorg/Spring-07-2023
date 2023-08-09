@@ -2,6 +2,7 @@ package ee.katrina.webshop.controller;
 
 import ee.katrina.webshop.dto.parcelmachines.OmnivaPM;
 import ee.katrina.webshop.dto.parcelmachines.ParcelMachines;
+import ee.katrina.webshop.dto.parcelmachines.SmartPostPM;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,14 +41,14 @@ public class ParcelMachineController {
 
         parcelMachines.setOmnivaPMs(omnivaResult);
 
-//        ResponseEntity<SmartPostPM[]> smartPostResponse = restTemplate.exchange("https://www.smartpost.ee/places.json",
-//                HttpMethod.GET, null, SmartPostPM[].class);
+        ResponseEntity<SmartPostPM[]> smartPostResponse = restTemplate.exchange("https://www.smartpost.ee/places.json",
+                HttpMethod.GET, null, SmartPostPM[].class);
 
-//        if (finalCountry.equals("EE")) {
-//            parcelMachines.setSmartPostPMS(Arrays.asList(smartPostResponse.getBody()));
-//        } else {
-            parcelMachines.setSmartPostPMS(new ArrayList<>());
-//        }
+        if (finalCountry.equals("EE")) {
+            parcelMachines.setSmartPostPMs(Arrays.asList(smartPostResponse.getBody()));
+        } else {
+            parcelMachines.setSmartPostPMs(new ArrayList<>());
+        }
 
         return parcelMachines;
     }

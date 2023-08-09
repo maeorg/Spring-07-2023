@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Product } from '../models/product.model';
+import { CartProduct } from '../models/cart-product.model';
+import { ProductService } from '../services/product.service';
+import { Page } from '../models/page.interface';
 
 @Component({
   selector: 'app-homepage',
@@ -10,14 +13,41 @@ import { Product } from '../models/product.model';
 export class HomepageComponent {
 
   products: Product[] = [];
+  pages: number[] = [];
+  activePage = 1;
 
-  constructor(private httpClient: HttpClient) {} // Dependency Injection
+  constructor(private productService: ProductService) {} // Dependency Injection
 
   ngOnInit() { // reserveeritud funktsioon ComponentDidMount
-    this.httpClient.get<Product[]>("http://localhost:8080/products").subscribe(res => this.products = res);
+    this.productService.getPublicProducts(0)
+    .subscribe((data: Page) => {
+      this.products = data.content;
+      for (let index = 1; index <= data.totalPages; index++) {
+        this.pages.push(index);
+      }
+    });
   }
 
-  addToCart(product: Product) {
-    // this.products = "LISASID OSTUKORVI";
+  onChangePage(page: number) {
+    this.activePage = page;
+    this.productService.getPublicProducts(page-1)
+    .subscribe((data: Page) => {
+      this.products = data.content;
+    });
+  }
+
+  addToCart(productClicked: Product) {
+    const cartItemsSS = sessionStorage.getItem("cartItems");
+    let cartItems: CartProduct[] = [];
+    if (cartItemsSS) {
+      cartItems = JSON.parse(cartItemsSS);
+    }                                                               
+    const index = cartItems.findIndex(element => element.product.id === productClicked.id);
+    if (index >= 0) {
+      cartItems[index].quantity++; 
+    } else {
+      cartItems.push({ product: productClicked, quantity: 1 });
+    }
+    sessionStorage.setItem("cartItems", JSON.stringify(cartItems));
   }
 }
