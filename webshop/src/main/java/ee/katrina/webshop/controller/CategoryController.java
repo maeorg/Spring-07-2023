@@ -11,8 +11,6 @@ import java.util.List;
 //@CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
 
-    // KODUS: Kõikide võtmine, Lisamine, Kustutamine, Ühe võtmine, Muutmine
-
     @Autowired
     CategoryRepository categoryRepository;
 
