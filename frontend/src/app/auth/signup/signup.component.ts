@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Address } from 'src/app/models/address.model';
 import { ContactData } from 'src/app/models/contactData.model';
 import { Person } from 'src/app/models/person.model';
-import { PersonService } from 'src/app/services/person.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,11 +12,11 @@ import { PersonService } from 'src/app/services/person.service';
 })
 export class SignupComponent {
   
-  constructor(private personService: PersonService) {}
+  constructor(private authService: AuthService) {}
 
-  onSubmit(addPersonForm: NgForm) {
+  onSubmit(signUpForm: NgForm) {
 
-    const formValue = addPersonForm.value;
+    const formValue = signUpForm.value;
 
     const newPerson = new Person(
       formValue.personalCode,
@@ -36,6 +36,7 @@ export class SignupComponent {
       )
     );
 
-    this.personService.addPerson(newPerson).subscribe();
+    // this.personService.addPerson(newPerson).subscribe();
+    this.authService.signUp(newPerson).subscribe();
   }
 }

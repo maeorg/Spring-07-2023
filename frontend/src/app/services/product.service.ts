@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.model';
 import { Category } from '../models/category.models';
@@ -24,7 +24,17 @@ export class ProductService {
   }
 
   getProducts() {
-    return this.httpClient.get<Product[]>(environment.baseUrl + "/products");
+    const options = this.getAuthToken();
+
+    return this.httpClient.get<Product[]>(environment.baseUrl + "/products", options);
+  }
+
+  private getAuthToken() {
+    return {
+      headers: new HttpHeaders({
+        "Authorization": "Bearer " + sessionStorage.getItem("token")
+      })
+    };
   }
 
   getPublicProducts(currentPage: number) {
@@ -41,11 +51,11 @@ export class ProductService {
   }
 
   decreaseStock(product: Product) {
-    return this.httpClient.patch<Product[]>(environment.baseUrl + "/decrease-stock/" + product.id, {});
+    return this.httpClient.patch<Product[]>(environment.baseUrl + "/decrease-stock/" + product.id, {}, this.getAuthToken());
   }
 
   increaseStock(product: Product) {
-    return this.httpClient.patch<Product[]>(environment.baseUrl+ "/increase-stock/" + product.id, {});
+    return this.httpClient.patch<Product[]>(environment.baseUrl+ "/increase-stock/" + product.id, {}, this.getAuthToken());
   }
   
 }

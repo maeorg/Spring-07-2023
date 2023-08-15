@@ -16,8 +16,8 @@ const routes: Routes = [
   { path: "lisa-toode", component: AddProductComponent },
   { path: "muuda-toode/:id", component: EditProductComponent },
   { path: "halda-tooteid", component: MaintainProductsComponent },
-  { path: "loo-konto", component: SignupComponent},
-  { path: "logi-sisse", component: LoginComponent},
+  { path: "signup", component: SignupComponent},
+  { path: "login", component: LoginComponent},
   { path: "**", component: NotFoundComponent }
 ];
 

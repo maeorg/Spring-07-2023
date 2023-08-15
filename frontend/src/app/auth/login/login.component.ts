@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,12 +9,22 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent {
 
+  constructor(private authService: AuthService) {}
 
   onSubmit(loginForm: NgForm) {
 
     const formValue = loginForm.value;
 
-    console.log(formValue.email);
+    const loginFormData = {
+      email: formValue.email,
+      personalCode: formValue.personalCode,
+      password: formValue.password
+    };
+
+    this.authService.login(loginFormData).subscribe(data => {
+      sessionStorage.setItem("token",data.token);
+      sessionStorage.setItem("expiration",data.expiration.toString());
+    });
 
   }
 }

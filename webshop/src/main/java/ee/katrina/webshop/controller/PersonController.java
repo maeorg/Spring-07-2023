@@ -1,7 +1,6 @@
 package ee.katrina.webshop.controller;
 
 import ee.katrina.webshop.entity.Person;
-import ee.katrina.webshop.exception.ProductNotFoundException;
 import ee.katrina.webshop.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,11 @@ public class PersonController {
         return personRepository.findAll();
     }
 
-//    @PostMapping("persons")
-//    public List<Person> addPerson(@RequestBody Person person) {
-//        personRepository.save(person);
-//        return personRepository.findAll();
-//    }
+    @PostMapping("persons")
+    public List<Person> addPerson(@RequestBody Person person) {
+        personRepository.save(person);
+        return personRepository.findAll();
+    }
 
     @DeleteMapping("persons/{id}")
     public List<Person> deletePerson(@PathVariable Long id) {

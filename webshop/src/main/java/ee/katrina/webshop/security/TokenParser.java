@@ -1,5 +1,9 @@
 package ee.katrina.webshop.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +23,10 @@ import java.io.IOException;
 @Component
 @Log4j2
 public class TokenParser extends BasicAuthenticationFilter {
+
+    // hiljem kindlasti application.properties failis !Ei tohi githubi panna
+    private String securityKey = "oAV1CCJSvHQmOfx2hkkpeH8zcXRPkroStk0+hy29Kg7LKHiPFkgCJFR4QzubCbweD5cmd0jYR5Q9" +
+            "Uvsiw79gfHkpGFu6GOME/W1adSP5HPMqUpWn8DFGjC43ii5KSkr/oTgu3g==";
     public TokenParser(@Lazy AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -27,12 +35,22 @@ public class TokenParser extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-//        System.out.println(request.getMethod());
-        log.info(request.getHeader(HttpHeaders.AUTHORIZATION));
+        String requestToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        log.info(requestToken);
 
-        if (request.getHeader(HttpHeaders.AUTHORIZATION) != null &&
-                request.getHeader(HttpHeaders.AUTHORIZATION).equals("123")) {
-            Authentication authentication = new UsernamePasswordAuthenticationToken("KASUTAJA1", null, null);
+        if (requestToken != null && requestToken.startsWith("Bearer ")) {
+
+            requestToken = requestToken.replace("Bearer ", "");
+
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(securityKey)))
+                    .build()
+                    .parseClaimsJws(requestToken)
+                    .getBody();
+
+            String personId = claims.getSubject();
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(personId, null, null);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
