@@ -36,7 +36,6 @@ export class SignupComponent {
       )
     );
 
-    // this.personService.addPerson(newPerson).subscribe();
     this.authService.signUp(newPerson).subscribe();
   }
 }

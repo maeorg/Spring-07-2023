@@ -26,9 +26,10 @@ public class TokenGenerator {
         String jwtToken = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(securityKey)),
                         SignatureAlgorithm.HS512)
-                .setAudience("Katrina's webshop")
+                .setIssuer("Katrina's webshop")
                 .setExpiration(expiration)
                 .setSubject(person.getId().toString())
+                .setAudience(String.valueOf(person.isAdmin()))
                 .compact();
 
         authToken.setToken(jwtToken);

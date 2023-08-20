@@ -11,7 +11,7 @@ import { Page } from '../models/page.interface';
 export class ProductService {
 
   private url = environment.baseUrl + "/products/";
-  private productsPerPage = 2;
+  private productsPerPage = 3;
 
   constructor(private httpClient: HttpClient) { }
 

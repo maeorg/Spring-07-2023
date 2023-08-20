@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -21,6 +22,8 @@ public class Person {
     private String firstName;
     private String lastName;
     private String password;
+    @ColumnDefault("false")
+    private boolean admin;
     @OneToOne(cascade = {CascadeType.ALL})
     private ContactData contactData;
 }

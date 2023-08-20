@@ -14,11 +14,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Log4j2
@@ -36,7 +40,6 @@ public class TokenParser extends BasicAuthenticationFilter {
             throws IOException, ServletException {
 
         String requestToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info(requestToken);
 
         if (requestToken != null && requestToken.startsWith("Bearer ")) {
 
@@ -50,8 +53,19 @@ public class TokenParser extends BasicAuthenticationFilter {
 
             String personId = claims.getSubject();
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(personId, null, null);
+            boolean isAdmin = Boolean.parseBoolean(claims.getAudience());
+
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            if (isAdmin) {
+                System.out.println("LÄKSIN SISSE");
+                GrantedAuthority authority = new SimpleGrantedAuthority("admin");
+                authorities.add(authority);
+            }
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(personId, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            log.info(authentication);
         }
 
         super.doFilterInternal(request, response, chain);

@@ -1,5 +1,6 @@
 package ee.katrina.cardgame.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
