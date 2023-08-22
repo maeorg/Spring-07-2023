@@ -12,8 +12,6 @@ import ee.katrina.webshop.exception.NotEnoughInStockException;
 import ee.katrina.webshop.repository.OrderRepository;
 import ee.katrina.webshop.repository.PersonRepository;
 import ee.katrina.webshop.repository.ProductRepository;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -73,13 +71,6 @@ public class OrderService {
                 .totalSum(totalSum)
                 .build();
 
-//        Order order = new Order();
-//        order.setPaymentState("Initial");
-//        order.setPerson(person);
-//        order.setOrderRow(orderRows);
-//        order.setCreationDate(new Date());
-//        order.setTotalSum(totalSum);
-
         Order newOrder = orderRepository.save(order);
         return newOrder.getId();
     }
@@ -98,7 +89,7 @@ public class OrderService {
         return totalSum;
     }
 
-    private void decreaseStock(OrderRow o, Product product) throws NotEnoughInStockException, ExecutionException {
+    public void decreaseStock(OrderRow o, Product product) throws NotEnoughInStockException, ExecutionException {
         if (product.getStock() < o.getQuantity()) {
             throw new NotEnoughInStockException("Not enough in stock: " + product.getName() + ", id: " + product.getId());
         }
